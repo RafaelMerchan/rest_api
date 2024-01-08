@@ -4,8 +4,17 @@ var router = express.Router();
 const { Sequelize, Op } = require('sequelize');
 const Suppliers = require('../models').suppliers;
 
-router.get('/findAll/json', function(req, res, next) {
-    Users.findAll({  
+router.get('/findAll', function(req, res, next) {
+
+  /* Verificador de autorización */
+
+  const { role } = req.user;
+
+  if (role !== process.env.ADMIN) {
+      return res.sendStatus(401);
+  }
+
+    Suppliers.findAll({  
     })  
     .then(users => {  
         res.json(users);  
